@@ -7,25 +7,7 @@ let links = [{
   description: 'Fullstack tutorial for GraphQL'
 }]
 
-/**
- * Constants define the GraphQL Schema
- */
-const typeDefs = `
-  type Query {
-    info: String!
-    feed: [Link!]!
-  }
-
-  type Mutation {
-    post(url: String!, description: String!): Link!
-  }
-
-  type Link {
-    id: ID!
-    description: String!
-    url: String!
-  }
-  `
+let idCount = links.length
 
 /**
  * The implementation of the GraphQL schema
@@ -38,15 +20,21 @@ const resolvers = {
     info: () => `This is the API of a Hackernes Clone`,
     feed: () => links,
   },
-  Link: {
-    id: (root) => root.id,
-    description: (root) => root.description,
-    url: (root) => root.url,
+  Mutation: {
+    post: (root, args) => {
+      const link = {
+        id: `link-${idCount++}`,
+        description: args.description,
+        url: args.url,
+      }
+      links.push(link)
+      return link
+    }
   }
 }
 
 const server = new GraphQLServer({
-  typeDefs,
+  typeDefs: './src/schema.graphql',
   resolvers
 })
 
