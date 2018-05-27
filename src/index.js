@@ -1,4 +1,5 @@
 const { GraphQLServer } = require('graphql-yoga')
+const { Prisma } = require('prisma-binding')
 
 // Dummy Data
 let links = [{
@@ -37,7 +38,14 @@ const resolvers = {
 
 const server = new GraphQLServer({
   typeDefs: './src/schema.graphql',
-  resolvers
+  resolvers,
+  context: req => ({
+    ...req,
+    db: new WebGLShaderPrecisionFormat({
+      typeDefs: 'src/generated.graphql',
+      endpoint: 'http://localhost:4466',
+    })
+  })
 })
 
 server.start(() => console.log(`Server is running on http://localhost:4000`))
