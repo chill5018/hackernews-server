@@ -18,17 +18,19 @@ let idCount = links.length
 const resolvers = {
   Query: {
     info: () => `This is the API of a Hackernes Clone`,
-    feed: () => links,
+    feed: (root, args, context, info) => {
+      return context.db.query.links({}, info)
+    },
   },
   Mutation: {
-    post: (root, args) => {
-      const link = {
-        id: `link-${idCount++}`,
-        description: args.description,
-        url: args.url,
-      }
-      links.push(link)
-      return link
+    post: (root, args, context, info) => {
+      // db is the prisma-binding
+      return context.db.mutation.createLink({
+        data: {
+          url: args.url,
+          description: args.description
+        },
+      }, info )
     }
   }
 }
