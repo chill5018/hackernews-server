@@ -1,0 +1,10 @@
+{
+  "name": "hackernews-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Colin Hill <cwh@colinwhill.com>",
+  "license": "MIT",
+  "dependencies": {
+    "graphql-yoga": "^1.14.5"
+  }
+}
